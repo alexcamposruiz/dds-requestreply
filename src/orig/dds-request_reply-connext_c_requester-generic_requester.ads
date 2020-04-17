@@ -1,0 +1,102 @@
+with DDS.Treats_Generic;
+generic
+   with package TReq is new DDS.Treats_Generic (<>);
+   with package TRep is new DDS.Treats_Generic (<>);
+package DDS.Request_Reply.Connext_C_Requester.Generic_Requester is
+   pragma Elaborate_Body;
+   type TRequester is abstract new RTI_Connext_Requester with null record;
+
+    --  #define RTI_CONNEXT_REQUESTER_DECL(TReq, TRep, TRequester)                    \
+   --                                                                                \
+   --      typedef struct TRequester {                                               \
+   --          RTI_Connext_Requester parent;                                         \
+   --      } TRequester;                                                             \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      TRequester* TRequester ## _create(                                        \
+   --          DDS_DomainParticipant * participant, const char* service_name);       \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      TRequester* TRequester ## _create_w_params(                               \
+   --          const RTI_Connext_RequesterParams* params);                           \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      DDS_ReturnCode_t TRequester ## _send_request(                             \
+   --          TRequester* self, const TReq* request);                               \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      DDS_ReturnCode_t TRequester ## _send_request_w_params(                    \
+   --          TRequester* self, const TReq* request,                                \
+   --          struct DDS_WriteParams_t* request_info);                              \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      DDS_ReturnCode_t TRequester ## _receive_reply(                            \
+   --          TRequester* self, TRep* reply,                                        \
+   --          struct DDS_SampleInfo* sample_info,                                   \
+   --          const struct DDS_Duration_t* timeout);                                \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      DDS_ReturnCode_t TRequester ## _receive_replies(                          \
+   --          TRequester* self, struct TRep ## Seq* received_data,                  \
+   --          struct DDS_SampleInfoSeq* info_seq, DDS_Long min_reply_count,         \
+   --          DDS_Long max_reply_count, const struct DDS_Duration_t* max_wait);     \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      DDS_ReturnCode_t TRequester ## _take_reply(                               \
+   --          TRequester* self, TRep* reply,                                        \
+   --          struct DDS_SampleInfo* sample_info);                                  \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      DDS_ReturnCode_t TRequester ## _take_replies(                             \
+   --          TRequester* self, struct TRep ## Seq* reply_seq,                      \
+   --          struct DDS_SampleInfoSeq* sample_info_seq, DDS_Long max_count);       \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport DDS_ReturnCode_t                          \
+   --      TRequester ## _take_reply_for_related_request(                            \
+   --          TRequester* self, TRep* reply,                                        \
+   --          struct DDS_SampleInfo* sample_info,                                   \
+   --          const struct DDS_SampleIdentity_t* related_request_info);             \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport DDS_ReturnCode_t                          \
+   --      TRequester ## _take_replies_for_related_request(                          \
+   --          TRequester* self, struct TRep ## Seq* reply_seq,                      \
+   --          struct DDS_SampleInfoSeq* sample_info_seq, DDS_Long max_count,        \
+   --          const struct DDS_SampleIdentity_t* related_request_info);             \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      DDS_ReturnCode_t TRequester ## _read_reply(                               \
+   --          TRequester* self, TRep* reply,                                        \
+   --          struct DDS_SampleInfo* sample_info);                                  \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      DDS_ReturnCode_t TRequester ## _read_replies(                             \
+   --          TRequester* self, struct TRep ## Seq* reply_seq,                      \
+   --          struct DDS_SampleInfoSeq* sample_info_seq, DDS_Long max_count);       \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport DDS_ReturnCode_t                          \
+   --      TRequester ## _read_reply_for_related_request(                            \
+   --          TRequester* self, TRep* reply,                                        \
+   --          struct DDS_SampleInfo* sample_info,                                   \
+   --          const struct DDS_SampleIdentity_t* related_request_info);             \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport DDS_ReturnCode_t                          \
+   --      TRequester ## _read_replies_for_related_request(                          \
+   --          TRequester* self, struct TRep ## Seq* reply_seq,                      \
+   --          struct DDS_SampleInfoSeq* sample_info_seq, DDS_Long max_count,        \
+   --          const struct DDS_SampleIdentity_t* related_request_info);             \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      TReq ## DataWriter* TRequester ## _get_request_datawriter(                \
+   --          TRequester* self);                                                    \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      TRep ## DataReader* TRequester ## _get_reply_datareader(                  \
+   --          TRequester* self);                                                    \
+   --                                                                                \
+   --      NDDSUSERDllExport XMQCDllExport                                           \
+   --      DDS_ReturnCode_t TRequester ## _return_loan(                              \
+   --          TRequester* self, struct TRep ## Seq *received_data,                  \
+   --          struct DDS_SampleInfoSeq *info_seq);                                  \
+   --
+   --
+end DDS.Request_Reply.Connext_C_Requester.Generic_Requester;

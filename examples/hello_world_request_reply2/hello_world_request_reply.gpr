@@ -1,0 +1,28 @@
+with "../../dds-ada-request_reply.gpr"; --@REPLACEwith "dds-ada-request_reply.gpr";
+with "dds.gpr";
+
+project Hello_World_Request_Reply is
+   
+   for Languages use ("C", "Ada", "Java", "idl");
+   
+   for Main use project'Main & ("PrimeNumberReplier.c");
+   for Main use project'Main & ("PrimeNumberRequester.c");
+   for Main use project'Main & ("primes-replier_main.adb");
+   for Main use project'Main & ("primes-requester_main.adb");
+
+   for Source_Dirs use ("src/**");
+   for Object_Dir use ".obj";
+   for Exec_Dir use "bin";
+   
+   package Compiler is
+      for Driver ("Java") use "";
+      for Driver ("idl") use "";
+      for Default_Switches ("C") use Dds.Compiler'Default_Switches ("C");     
+      for Default_Switches ("Ada") use ("-gnatwa");     
+   end Compiler;
+ 
+   package Naming is 
+      for Implementation_Suffix ("java") use ".java";
+      for Implementation_Suffix ("idl") use ".idl";
+   end Naming;
+end Hello_World_Request_Reply;

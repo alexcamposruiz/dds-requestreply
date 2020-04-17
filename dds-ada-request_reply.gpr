@@ -1,0 +1,18 @@
+with "dds.gpr";
+library project DDS.Ada.Request_Reply extends "dds-ada.gpr" is
+   for Languages use ("Ada");
+   for Library_Name use "ddsrequestreply";
+   for Source_Dirs use ("src/**");
+   for Object_Dir use ".obj";
+   for Library_Dir use "lib";
+   for Library_Kind use "Static";
+   package Compiler is
+      for Driver("gen") use "";
+      for Driver("C") use "";
+   end Compiler;
+
+   package Naming is
+      for SPEC_Suffix ("gen") use ".gen";
+   end Naming;
+
+end DDS.Ada.Request_Reply;
